@@ -1,5 +1,5 @@
 <script>
-	import { openB64 } from "./utils";
+	import { openB64, testDataURL } from "./utils";
 	const defaultMimes = ["application/pdf", "image/png"];
 	const maxDisplayLength = 30;
 
@@ -8,8 +8,15 @@
 	let customMime = "";
 	let isCustomMime = false;
 
-	// data:[<mediatype>][;base64],<data>
+	$: if (value.startsWith("data:")) {
+	  const groups = testDataURL(value);
+	  if (groups) {
+	    update(groups);
+	  }
+	  mime = isCustomMime ? customMime : selectedMime;
+	}
 	$: mime = isCustomMime ? customMime : selectedMime;
+	// data:[<mediatype>][;base64],<data>
 	$: prefix = `data:${mime};base64,`;
 	$: b64url = prefix + value;
 	$: urlDisplay =
@@ -18,16 +25,29 @@
 	    : b64url;
 
 	function open() {
-	  prevURL = openB64(value, mime);
+	  openB64(value, mime);
+	}
+
+	function update(groups) {
+	  value = groups.data;
+	  isCustomMime = !defaultMimes.includes(groups.mime);
+	  if (isCustomMime) {
+	    customMime = groups.mime;
+	  } else {
+	    selectedMime = groups.mime;
+	  }
 	}
 </script>
 
 <style>
-</style>
-
+textarea {
+    width: 100%;
+    min-height: 400px;
+}
+</style>			
 <div>
 	<div>
-		<textarea bind:value={value} />
+		<textarea bind:value={value}/>
 	</div>
 	<div>
 		<ul>

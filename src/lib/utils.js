@@ -26,3 +26,17 @@ const b64toArrayBuffer = (b64data) => {
 
   return arrayBuffer;
 };
+
+const dataURLRex = /^data:(.*?)(;base64)?,(.+)$/;
+
+export function testDataURL(str) {
+  // data:[<mediatype>][;base64],<data>
+  const groups = dataURLRex.exec(str);
+  console.log(groups);
+  if (!groups || groups.length === 0) return null;
+
+  return {
+    mime: groups[1],
+    data: groups[3]
+  };
+}
