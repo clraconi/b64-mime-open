@@ -1,5 +1,4 @@
 <script>
-  import Header from '$lib/header/Header.svelte';
   import { browser } from '$app/env';
   import { page } from '$app/stores';
   import '../app.css';
