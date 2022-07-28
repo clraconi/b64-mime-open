@@ -1,4 +1,5 @@
 <script>
+	import { openB64 } from "./utils";
 	const defaultMimes = ["application/pdf", "image/png"];
 	const maxDisplayLength = 30;
 
@@ -15,6 +16,10 @@
 	  b64url.length > maxDisplayLength
 	    ? b64url.substring(0, maxDisplayLength) + "..."
 	    : b64url;
+
+	function open() {
+	  prevURL = openB64(value, mime);
+	}
 </script>
 
 <style>
@@ -47,6 +52,6 @@
 		<p>{urlDisplay}</p>
 	</div>
 	<div>
-		<a href={b64url} target="_blank">Open in new tab</a>
+		<button on:click={open}>Open in new tab</button>
 	</div>
 </div>
