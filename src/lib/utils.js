@@ -1,11 +1,8 @@
-let objURL;
 export const openB64 = (b64data, mime) => {
   const blob = b64toBlob(b64data, mime);
-  if (objURL) {
-    URL.revokeObjectURL(objURL);
-  }
-  objURL = URL.createObjectURL(blob);
+  const objURL = URL.createObjectURL(blob);
   window.open(objURL, "_blank");
+  return objURL;
 };
 
 const b64toBlob = (b64data, mime) => {

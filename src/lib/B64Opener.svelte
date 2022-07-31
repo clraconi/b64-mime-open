@@ -1,5 +1,7 @@
 <script>
 	import { openB64, testDataURL } from "./utils";
+	import HistoryManager from "./HistoryManager";
+
 	const defaultMimes = ["application/pdf", "image/png"];
 	const maxDisplayLength = 30;
 
@@ -24,8 +26,16 @@
 	    ? b64url.substring(0, maxDisplayLength) + "..."
 	    : b64url;
 
+	let histories = [];
+
+	function handleHistoryDelete(item) {
+	  histories = histories.filter(d => d != item);
+	  URL.revokeObjectURL(item);
+	}
+
 	function open() {
-	  openB64(value, mime);
+	  const url = openB64(value, mime);
+	  histories = [...histories, url];
 	}
 
 	function update(groups) {
@@ -40,11 +50,8 @@
 </script>
 
 <style>
-textarea {
-    width: 100%;
-    min-height: 400px;
-}
-</style>			
+</style>
+
 <div>
 	<div>
 		<textarea bind:value={value}/>
@@ -73,5 +80,9 @@ textarea {
 	</div>
 	<div>
 		<button on:click={open}>Open in new tab</button>
+	</div>
+
+	<div>
+		<HistoryManager histories={histories} onDelete={handleHistoryDelete}/>
 	</div>
 </div>
