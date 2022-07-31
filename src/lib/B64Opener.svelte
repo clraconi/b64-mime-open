@@ -1,6 +1,6 @@
 <script>
 	import { openB64, testDataURL } from "./utils";
-	import HistoryManager from "./HistoryManager";
+	import HistoryManager from "./HistoryManager.svelte";
 
 	const defaultMimes = ["application/pdf", "image/png"];
 	const maxDisplayLength = 30;
